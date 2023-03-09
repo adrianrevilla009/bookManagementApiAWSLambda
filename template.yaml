@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  bookManagementApiAWSLambda
+
+  Sample SAM Template for bookManagementApiAWSLambda
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+
+Resources:
+  ApplicationFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: app
+      Handler: masterCloudApps.api.bookManagementApiAWSLambda.Application::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+      Events:
+        lambdaGetAllBooks:
+          Type: Api
+          Properties:
+            Path: /books/
+            Method: GET
+        lambdaGetBook:
+          Type: Api
+          Properties:
+            Path: /books/{id}
+            Method: GET
+        lambdaAddBook:
+          Type: Api
+          Properties:
+            Path: /books/
+            Method: POST
+        lambdaUpdateBook:
+          Type: Api
+          Properties:
+            Path: /books/{id}
+            Method: PUT
+        lambdaDeleteBook:
+          Type: Api
+          Properties:
+            Path: /books/{id}
+            Method: DELETE
+      Policies:
+        # Policies to allow the execution of the indicated actions to the table described in Resource
+        - DynamoDBCrudPolicy:
+            TableName:
+              !Ref BooksTable
+  BooksTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: appbooks
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  PublicApi:
+    Description: "API Gateway endpoint URL for ManageFiles App"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
