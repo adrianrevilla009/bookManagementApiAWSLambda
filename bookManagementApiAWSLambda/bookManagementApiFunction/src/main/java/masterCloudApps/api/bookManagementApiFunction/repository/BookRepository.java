@@ -18,9 +18,9 @@ import masterCloudApps.api.bookManagementApiFunction.model.Userr;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BookRepository {
     private static final String TABLE_NAME = "appbooks";
@@ -66,6 +66,7 @@ public class BookRepository {
     public PutItemOutcome addBook(Book book) throws JSONException {
         JSONObject authorJson = Userr.getUserrJson(book);
         List<JSONObject> commentList = Comment.getCommentJsonList(book);
+        List<String> comments = commentList.stream().map(JSONObject::toString).collect(Collectors.toList());
 
         Item item = new Item()
                 .withPrimaryKey("id", UUID.randomUUID().toString())
@@ -74,8 +75,7 @@ public class BookRepository {
                 .withJSON("author", authorJson.toString())
                 .withString("editorial", book.getEditorial())
                 .withString("publicationDate", book.getPublicationDate().toString())
-                .withList("commentList", new ArrayList<>());
-        // TODO save comments .withList("commentList", commentList)
+                .withList("commentList", comments); // this is not being saved as Json, is done as a string
 
         PutItemSpec putItemSpec = new PutItemSpec()
                 .withItem(item)
@@ -87,6 +87,7 @@ public class BookRepository {
     public UpdateItemOutcome updateBook(Book book) throws JSONException {
         JSONObject authorJson = Userr.getUserrJson(book);
         List<JSONObject> commentList = Comment.getCommentJsonList(book);
+        List<String> comments = commentList.stream().map(JSONObject::toString).collect(Collectors.toList());
 
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
                 .withPrimaryKey("id", book.getId())
@@ -99,8 +100,8 @@ public class BookRepository {
                         .withJSON(":author", authorJson.toString())
                         .withString(":editorial", book.getEditorial())
                         .withString(":publicationDate", book.getPublicationDate().toString())
-                        .withList(":commentList", new ArrayList<>())
-                ) // TODO update comments .withList(":commentList", commentList)
+                        .withList(":commentList", comments)
+                )
                 .withReturnValues("ALL_OLD");
         return table.updateItem(updateItemSpec);
     }
@@ -108,8 +109,6 @@ public class BookRepository {
     public DeleteItemOutcome deleteBook(String id) {
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
                 .withPrimaryKey("id", id)
-                //.withConditionExpression("userid = :userid")
-                //.withValueMap(new ValueMap().withString(":userid", userid))
                 .withReturnValues(ReturnValue.ALL_OLD);
         return table.deleteItem(deleteItemSpec);
     }

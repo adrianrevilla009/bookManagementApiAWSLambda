@@ -92,7 +92,7 @@ public class BookService {
             PutItemOutcome res = bookRepository.addBook(saveBook);
 
             // TODO uncomment String id = (String) res.getItem().get("id");
-            String id = "This is not returning anything";
+            String id = "When save is not returning anything";
 
             String responseBody = mapper.writeValueAsString(id);
 

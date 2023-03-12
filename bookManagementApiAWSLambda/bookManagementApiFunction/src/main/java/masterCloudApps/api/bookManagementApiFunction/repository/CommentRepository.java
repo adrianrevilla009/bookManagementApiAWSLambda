@@ -11,12 +11,16 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import masterCloudApps.api.bookManagementApiFunction.model.Book;
 import masterCloudApps.api.bookManagementApiFunction.model.Comment;
 import masterCloudApps.api.bookManagementApiFunction.model.Userr;
+import masterCloudApps.api.bookManagementApiFunction.service.BookService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class CommentRepository {
@@ -25,6 +29,8 @@ public class CommentRepository {
     private AmazonDynamoDB amazonDynamoDB;
 
     private DynamoDB dynamoDB;
+
+    private BookRepository bookRepository = new BookRepository();
 
     public CommentRepository() {
         // dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
@@ -47,16 +53,29 @@ public class CommentRepository {
         table = dynamoDB.getTable(TABLE_NAME);
     }
 
-    public ScanResult getAllComments() {
-        ScanRequest scanRequest = new ScanRequest()
-                .withTableName(TABLE_NAME);
-        ScanResult scanResult = AmazonDynamoDBClientBuilder.defaultClient().scan(scanRequest);
-        List<Item> commentList = new ArrayList<>();
-        for (Map<String, AttributeValue> item : scanResult.getItems()) {
-            commentList.addAll((List<Item>) item.get("commentList"));
+    public List<Comment> getAllComments() {
+        ScanResult res = bookRepository.getAllBooks();
+
+        List<Item> itemList = ItemUtils.toItemList(res.getItems());
+        List<Comment> commentList = new ArrayList<>();
+        for (Item item : itemList) {
+            Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
+            List<Comment> comments = new Gson().fromJson(item.get("commentList").toString(), listType);
+            // TODO why when .add is returning null?
+            for (Comment comment : comments) {
+                commentList.add(comment);
+            }
+            // commentList.addAll(comments);
         }
-        // TODO
-        return new ScanResult();
+
+        /*ScanResult scanResult = new ScanResult();
+        List<Map<String, AttributeValue>> maps = new ArrayList<>();
+        Map hashMap = new HashMap();
+        hashMap.put("commentList", commentList);
+
+        scanResult.setItems(maps);
+        scanResult.setCount(commentList.size());*/
+        return commentList;
     }
 
     public Item getComment(String id) {

@@ -9,6 +9,7 @@ import masterCloudApps.api.bookManagementApiFunction.model.Book;
 import masterCloudApps.api.bookManagementApiFunction.model.Comment;
 import masterCloudApps.api.bookManagementApiFunction.model.Userr;
 import masterCloudApps.api.bookManagementApiFunction.repository.BookRepository;
+import masterCloudApps.api.bookManagementApiFunction.repository.CommentRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,14 +18,17 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentService {
-    private final BookRepository bookRepository = new BookRepository();
+    private final CommentRepository commentRepository = new CommentRepository();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     public APIGatewayProxyResponseEvent getAllComments() {
 
         try {
-            return createResponse(200, "");
+            List<Comment> commentList = commentRepository.getAllComments();
+            String responseBody = commentList.toString();
+
+            return createResponse(200, responseBody);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return createResponse(500, e.getMessage());

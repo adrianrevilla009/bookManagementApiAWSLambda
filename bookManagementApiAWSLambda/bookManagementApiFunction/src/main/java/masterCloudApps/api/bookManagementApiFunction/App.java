@@ -53,7 +53,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
         if (event.getPath().contains("/comments/")) {
             switch (event.getHttpMethod()) {
                 case "GET":
-                    if (event.getPathParameters().get("id") != null) {
+                    if (event.getPathParameters() != null && event.getPathParameters().get("id") != null) {
                         return this.commentService.getComment(event.getPathParameters().get("id"));
                     }
                     return this.commentService.getAllComments();
