@@ -5,11 +5,14 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import masterCloudApps.api.bookManagementApiFunction.model.Book;
 import masterCloudApps.api.bookManagementApiFunction.model.Comment;
 import masterCloudApps.api.bookManagementApiFunction.model.Userr;
 import masterCloudApps.api.bookManagementApiFunction.repository.BookRepository;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +26,7 @@ public class BookService {
 
     public APIGatewayProxyResponseEvent getAllBooks() {
 
-        return createResponse(200, "hola");
-
-        /*try {
+        try {
             ScanResult res = bookRepository.getAllBooks();
 
             List<Item> itemList = ItemUtils.toItemList(res.getItems());
@@ -49,7 +50,7 @@ public class BookService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return createResponse(500, e.getMessage());
-        }*/
+        }
     }
 
     public APIGatewayProxyResponseEvent getBook(String id) {
@@ -57,7 +58,7 @@ public class BookService {
         try {
             Item res = bookRepository.getBook(id);
 
-            String responseBody = mapper.writeValueAsString(res);
+            String responseBody = res.toString();
 
             return createResponse(200, responseBody);
         } catch (Exception e) {
@@ -72,18 +73,26 @@ public class BookService {
 
             Map<String,Object> book = mapper.readValue(data, new TypeReference<HashMap<String, Object>>() {});
 
+            Gson g = new Gson();
+            Userr author = g.fromJson(book.get("author").toString(), Userr.class);
+
             Book saveBook = new Book(
                     (String)book.get("title"),
                     (String)book.get("resume"),
-                    (Userr)book.get("author"),
+                    author,
                     (String)book.get("editorial"),
                     LocalDate.parse((String)book.get("publicationDate"))
             );
-            saveBook.setCommentList((List<Comment>) book.get("commentList"));
+
+            Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
+            List<Comment> comments = new Gson().fromJson(book.get("commentList").toString(), listType);
+
+            saveBook.setCommentList(comments);
 
             PutItemOutcome res = bookRepository.addBook(saveBook);
 
-            String id = (String) res.getItem().get("id");
+            // TODO uncomment String id = (String) res.getItem().get("id");
+            String id = "This is not returning anything";
 
             String responseBody = mapper.writeValueAsString(id);
 
@@ -100,19 +109,27 @@ public class BookService {
 
             Map<String,Object> book = mapper.readValue(data, new TypeReference<HashMap<String, Object>>() {});
 
+            Gson g = new Gson();
+            Userr author = g.fromJson(book.get("author").toString(), Userr.class);
+
             Book updateBook = new Book(
                     (String)book.get("title"),
                     (String)book.get("resume"),
-                    (Userr)book.get("author"),
+                    author,
                     (String)book.get("editorial"),
                     LocalDate.parse((String)book.get("publicationDate"))
             );
-            updateBook.setId((String)book.get("id"));
-            updateBook.setCommentList((List<Comment>) book.get("commentList"));
+            updateBook.setId(id);
+
+            Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
+            List<Comment> comments = new Gson().fromJson(book.get("commentList").toString(), listType);
+
+            updateBook.setCommentList(comments);
 
             UpdateItemOutcome res = bookRepository.updateBook(updateBook);
 
-            String responseBody = mapper.writeValueAsString(res.getUpdateItemResult().getAttributes());
+            // TODO uncomment String responseBody = mapper.writeValueAsString(res.getUpdateItemResult().getAttributes());
+            String responseBody = updateBook.toString();
             return createResponse(200, responseBody);
         } catch (Exception e) {
             System.out.println(e);

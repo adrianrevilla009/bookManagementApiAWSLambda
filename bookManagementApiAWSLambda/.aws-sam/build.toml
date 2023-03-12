@@ -6,9 +6,9 @@ codeuri = "C:\\Proyects\\master\\Modulo3\\3-bookManagementApiAWSLambda\\bookMana
 runtime = "java11"
 architecture = "x86_64"
 handler = "masterCloudApps.api.bookManagementApiFunction.App::handleRequest"
-source_hash = "9e88f9eadb8acf522360c8688384936e12b2bbf19d573c0aedd4dc0aec77601b"
+source_hash = "f1489dfa22386c7c1bcd0fa9fbc45ceff7dba1bd0dc45c6de66831cddd370a02"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["ApplicationFunction"]
+functions = ["bookManagementApiFunction"]
 
 [layer_build_definitions]

@@ -53,6 +53,16 @@ public class Comment {
         this.points = points;
     }
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id='" + id + '\'' +
+                ", author=" + author +
+                ", comment='" + comment + '\'' +
+                ", points=" + points +
+                '}';
+    }
+
     public static List<JSONObject> getCommentJsonList(Book book) throws JSONException {
         List<JSONObject> commentList = new ArrayList<>();
         for (Comment comment : book.getCommentList()) {

@@ -1,0 +1,14 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 128
+      Handler: masterCloudApps.api.bookManagementApiFunction.App
+      CodeUri: C:\Proyects\master\Modulo3\3-bookManagementApiAWSLambda\bookManagementApiAWSLambda\bookManagementApiFunction
+      Runtime: java11
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          DYNAMODB_ENDPOINT: http://172.17.0.1:8000

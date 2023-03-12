@@ -10,10 +10,10 @@ Globals:
     Timeout: 20
     MemorySize: 128
 Resources:
-  ApplicationFunction:
+  bookManagementApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ApplicationFunction
+      CodeUri: bookManagementApiFunction
       Handler: masterCloudApps.api.bookManagementApiFunction.App::handleRequest
       Runtime: java11
       Architectures:
@@ -49,12 +49,37 @@ Resources:
           Properties:
             Path: /books/{id}
             Method: DELETE
+        lambdaGetAllComments:
+          Type: Api
+          Properties:
+            Path: /comments/
+            Method: GET
+        lambdaGetComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
+            Method: GET
+        lambdaAddComment:
+          Type: Api
+          Properties:
+            Path: /comments/
+            Method: POST
+        lambdaUpdateComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
+            Method: PUT
+        lambdaDeleteComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
+            Method: DELETE
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: BooksTable
     Metadata:
-      SamResourceId: ApplicationFunction
+      SamResourceId: bookManagementApiFunction
   BooksTable:
     Type: AWS::DynamoDB::Table
     Properties:

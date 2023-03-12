@@ -41,6 +41,15 @@ public class Userr {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "Userr{" +
+                "id='" + id + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     public static JSONObject getUserrJson(Book book) throws JSONException {
         JSONObject userrJson = new JSONObject();
         userrJson.put("id", UUID.randomUUID().toString());

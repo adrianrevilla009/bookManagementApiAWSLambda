@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/3-bookManagementApiAWSLambda.iml" filepath="$PROJECT_DIR$/.idea/3-bookManagementApiAWSLambda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookManagementApiAWSLambda/bookManagementApiFunction/bookManagementApiAWSLambda.iml" filepath="$PROJECT_DIR$/bookManagementApiAWSLambda/bookManagementApiFunction/bookManagementApiAWSLambda.iml" />
       <module fileurl="file://$PROJECT_DIR$/bookManagementApiAWSLambda/HelloWorldFunction/bookManagementApiFunction.iml" filepath="$PROJECT_DIR$/bookManagementApiAWSLambda/HelloWorldFunction/bookManagementApiFunction.iml" />
     </modules>
   </component>

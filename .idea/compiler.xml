@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="bookManagementApiAWSLambda" />
         <module name="bookManagementApiFunction" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="bookManagementApiAWSLambda" target="11" />
       <module name="bookManagementApiFunction" target="11" />
     </bytecodeTargetLevel>
   </component>

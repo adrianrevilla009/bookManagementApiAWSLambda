@@ -32,14 +32,24 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
 
-        this.handleBookRequest(event);
+        if (event.getPath().contains("/books/")) {
+            switch (event.getHttpMethod()) {
+                case "GET":
+                    if (event.getPathParameters() != null && event.getPathParameters().get("id") != null) {
+                        return this.bookService.getBook(event.getPathParameters().get("id"));
+                    }
+                    return this.bookService.getAllBooks();
+                case "POST":
+                    return this.bookService.addBook(event.getBody());
+                case "PUT":
+                    return this.bookService.updateBook(event.getPathParameters().get("id"), event.getBody());
+                case "DELETE":
+                    return this.bookService.deleteBook(event.getPathParameters().get("id"));
+                default:
+                    return this.bookService.createResponse(400, "Unsupported method " + event.getHttpMethod());
+            }
+        }
 
-        this.handleCommentRequest(event);
-
-        return this.bookService.createResponse(400, "Not valid path " + event.getHttpMethod());
-    }
-
-    private APIGatewayProxyResponseEvent handleCommentRequest(APIGatewayProxyRequestEvent event) {
         if (event.getPath().contains("/comments/")) {
             switch (event.getHttpMethod()) {
                 case "GET":
@@ -57,29 +67,8 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
                     return this.commentService.createResponse(400, "Unsupported method " + event.getHttpMethod());
             }
         }
-        return this.commentService.createResponse(400, "Not valid path " + event.getHttpMethod());
-    }
 
-    private APIGatewayProxyResponseEvent handleBookRequest(APIGatewayProxyRequestEvent event) {
-        if (event.getPath().contains("/books/")) {
-            switch (event.getHttpMethod()) {
-                case "GET":
-                    if (event.getPathParameters().get("id") != null) {
-                        return this.bookService.getBook(event.getPathParameters().get("id"));
-                    }
-                    return this.bookService.getAllBooks();
-                case "POST":
-                    return this.bookService.addBook(event.getBody());
-                case "PUT":
-                    return this.bookService.updateBook(event.getPathParameters().get("id"), event.getBody());
-                case "DELETE":
-                    return this.bookService.deleteBook(event.getPathParameters().get("id"));
-                default:
-                    return this.bookService.createResponse(400, "Unsupported method " + event.getHttpMethod());
-            }
-        }
         return this.bookService.createResponse(400, "Not valid path " + event.getHttpMethod());
     }
-
 
 }
