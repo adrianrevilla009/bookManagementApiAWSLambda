@@ -11,14 +11,11 @@ Globals:
     Timeout: 20
     MemorySize: 128
 
-helloworld:
-  App::handleRequest:
-
 Resources:
   ApplicationFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: app
+      CodeUri: bookManagementApiFunction
       Handler: masterCloudApps.api.bookManagementApiFunction.App::handleRequest
       Runtime: java11
       Architectures:
@@ -53,6 +50,31 @@ Resources:
           Type: Api
           Properties:
             Path: /books/{id}
+            Method: DELETE
+        lambdaGetAllComments:
+          Type: Api
+          Properties:
+            Path: /comments/
+            Method: GET
+        lambdaGetComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
+            Method: GET
+        lambdaAddComment:
+          Type: Api
+          Properties:
+            Path: /comments/{bookId}
+            Method: POST
+        lambdaUpdateComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
+            Method: PUT
+        lambdaDeleteComment:
+          Type: Api
+          Properties:
+            Path: /comments/{id}
             Method: DELETE
       Policies:
         # Policies to allow the execution of the indicated actions to the table described in Resource
