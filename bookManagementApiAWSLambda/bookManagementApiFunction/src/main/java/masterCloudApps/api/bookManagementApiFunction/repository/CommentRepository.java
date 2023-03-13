@@ -58,72 +58,32 @@ public class CommentRepository {
 
         List<Item> itemList = ItemUtils.toItemList(res.getItems());
         List<Comment> commentList = new ArrayList<>();
+
         for (Item item : itemList) {
             Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
             List<Comment> comments = new Gson().fromJson(item.get("commentList").toString(), listType);
-            // TODO why when .add is returning null?
-            for (Comment comment : comments) {
-                commentList.add(comment);
-            }
-            // commentList.addAll(comments);
+            commentList.addAll(comments);
         }
-
-        /*ScanResult scanResult = new ScanResult();
-        List<Map<String, AttributeValue>> maps = new ArrayList<>();
-        Map hashMap = new HashMap();
-        hashMap.put("commentList", commentList);
-
-        scanResult.setItems(maps);
-        scanResult.setCount(commentList.size());*/
         return commentList;
     }
 
-    public Item getComment(String id) {
-        return table.getItem("id", id);
+    // TODO not developed
+    public String getComment(String id) {
+        return "";
     }
 
-    public PutItemOutcome addComment(Book book) throws JSONException {
-        JSONObject authorJson = Userr.getUserrJson(book);
-        List<JSONObject> commentList = Comment.getCommentJsonList(book);
-
-        Item item = new Item()
-                .withPrimaryKey("id", UUID.randomUUID().toString())
-                .withString("title", book.getTitle())
-                .withString("resume", book.getResume())
-                .withJSON("author", authorJson.toString())
-                .withString("editorial", book.getEditorial())
-                .withString("publicationDate", book.getPublicationDate().toString())
-                .withList("commentList", commentList);
-
-        return table.putItem(item);
+    // TODO not developed
+    public String addComment(Book book) throws JSONException {
+        return "";
     }
 
-    public UpdateItemOutcome updateComment(Book book) throws JSONException {
-        JSONObject authorJson = Userr.getUserrJson(book);
-        List<JSONObject> commentList = Comment.getCommentJsonList(book);
-
-        UpdateItemSpec updateItemSpec = new UpdateItemSpec()
-                .withPrimaryKey("id", book.getId())
-                .withUpdateExpression("set title = :title, resume = :resume, author = :author, " +
-                        "editorial = :editorial, publicationDate = :publicationDate, " +
-                        "commentList = :commentList")
-                .withValueMap(new ValueMap()
-                        .withString(":title", book.getTitle())
-                        .withString(":resume", book.getResume())
-                        .withJSON(":author", authorJson.toString())
-                        .withString(":editorial", book.getEditorial())
-                        .withString(":publicationDate", book.getPublicationDate().toString())
-                        .withList(":commentList", commentList))
-                .withReturnValues("ALL_OLD");
-        return table.updateItem(updateItemSpec);
+    // TODO not developed
+    public String updateComment(Book book) {
+        return "";
     }
 
-    public DeleteItemOutcome deleteComment(String id) {
-        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey("id", id)
-                //.withConditionExpression("userid = :userid")
-                //.withValueMap(new ValueMap().withString(":userid", userid))
-                .withReturnValues(ReturnValue.ALL_OLD);
-        return table.deleteItem(deleteItemSpec);
+    // TODO not developed
+    public String deleteComment(String id) {
+        return "";
     }
 }

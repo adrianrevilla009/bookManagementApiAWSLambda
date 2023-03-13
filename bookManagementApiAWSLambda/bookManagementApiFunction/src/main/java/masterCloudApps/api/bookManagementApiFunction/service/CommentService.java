@@ -35,45 +35,48 @@ public class CommentService {
         }
     }
 
+    // TODO not developed
     public APIGatewayProxyResponseEvent getComment(String id) {
 
         try {
-
-
-            return createResponse(200, "");
+            String s = commentRepository.getComment(id);
+            return createResponse(200, s);
         } catch (Exception e) {
             System.out.println(e);
             return createResponse(500, e.getMessage());
         }
     }
 
+    // TODO not developed
     public APIGatewayProxyResponseEvent addComment(String data) {
 
         try {
-
-            return createResponse(201, "");
+            String s = commentRepository.addComment(new Book());
+            return createResponse(201, s);
         } catch (Exception e) {
             System.out.println(e);
             return createResponse(500, e.getMessage());
         }
     }
 
+    // TODO not developed
     public APIGatewayProxyResponseEvent updateComment(String id, String data) {
 
         try {
-
-            return createResponse(200, "");
+            String s = commentRepository.updateComment(new Book());
+            return createResponse(200, s);
         } catch (Exception e) {
             System.out.println(e);
             return createResponse(500, e.getMessage());
         }
     }
 
+    // TODO not developed
     public APIGatewayProxyResponseEvent deleteComment(String id) {
 
         try {
-
-            return createResponse(200, "");
+            String s = commentRepository.deleteComment(id);
+            return createResponse(200, s);
         } catch (Exception e) {
             System.out.println(e);
             return createResponse(500, e.getMessage());

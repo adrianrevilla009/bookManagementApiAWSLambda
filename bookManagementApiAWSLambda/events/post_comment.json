@@ -1,7 +1,7 @@
 {
-  "body": "{\n    \"id\": \"08f18f54-e8cf-400b-8f42-af218e22da5f\",\r\n    \"title\": \"test\",\r\n    \"resume\": \"test\",\r\n    \"author\": {\r\n        \"nickname\": \"test\",\r\n        \"email\": \"test\"\r\n    },\r\n    \"editorial\": \"test\",\r\n    \"publicationDate\": \"2022-12-01\",\r\n    \"commentList\": [\r\n        {\r\n            \"author\": {\r\n                \"nickname\": \"test2\",\r\n                \"email\": \"test2\"\r\n            },\r\n            \"comment\": \"test\",\r\n            \"points\": 1\r\n        }\r\n    ]\r\n}",
+  "body": "{\r\n    \"title\": \"test\",\r\n    \"resume\": \"test\",\r\n    \"author\": {\r\n        \"nickname\": \"test\",\r\n        \"email\": \"test\"\r\n    },\r\n    \"editorial\": \"test\",\r\n    \"publicationDate\": \"2022-12-01\",\r\n    \"commentList\": [\r\n        {\r\n            \"author\": {\r\n                \"nickname\": \"test2\",\r\n                \"email\": \"test2\"\r\n            },\r\n            \"comment\": \"test\",\r\n            \"points\": 1\r\n        }\r\n    ]\r\n}",
   "resource": "/{proxy+}",
-  "path": "/prod/books/",
+  "path": "/prod/comments/",
   "httpMethod": "POST",
   "isBase64Encoded": false,
   "headers": {
@@ -44,7 +44,7 @@
       "userAgent": "Custom User Agent String",
       "user": null
     },
-    "path": "/prod/books/",
+    "path": "/prod/comments/",
     "resourcePath": "/{proxy+}",
     "httpMethod": "POST",
     "apiId": "1234567890",

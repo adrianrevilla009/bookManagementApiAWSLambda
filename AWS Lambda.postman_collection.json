@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "fa98d050-d3e1-41c7-9435-6d2d4a43a747",
+		"name": "AWS Lambda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11056725"
+	},
+	"item": [
+		{
+			"name": "Get books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/books/",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"books",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get book",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/books/08f18f54-e8cf-400b-8f42-af218e22da5f",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"books",
+						"08f18f54-e8cf-400b-8f42-af218e22da5f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"test\",\r\n    \"resume\" : \"test 1\",\r\n    \"author\" : {\r\n        \"nickname\": \"test2\",\r\n        \"email\": \"test3\"\r\n    },\r\n    \"editorial\": \"test4\",\r\n    \"publicationDate\" : \"2022-03-02\",\r\n    \"commentList\": [\r\n        {\r\n            \"author\": {\r\n                \"nickname\": \"test2\",\r\n                \"email\": \"test3\"\r\n            },\r\n            \"comment\": \"test5\",\r\n            \"points\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/books/",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"books",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"08f18f54-e8cf-400b-8f42-af218e22da5f\",\r\n    \"title\" : \"test\",\r\n    \"resume\" : \"test 1\",\r\n    \"author\" : {\r\n        \"nickname\": \"test2\",\r\n        \"email\": \"test3\"\r\n    },\r\n    \"editorial\": \"test4\",\r\n    \"publicationDate\" : \"2022-03-02\",\r\n    \"commentList\": [\r\n        {\r\n            \"author\": {\r\n                \"id\": \"97660577-9275-4d96-89c1-5e23df289392\",\r\n                \"nickname\": \"test8\",\r\n                \"email\": \"test8\"\r\n            },\r\n            \"comment\": \"test8\",\r\n            \"points\": 18,\r\n            \"id\": \"ee57b376-ac00-43cf-b0c0-f2759643bfcc\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ENDPOINT}}/books/",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"books",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete book",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/books/f13fce94-de6f-454c-b66d-9804c83f47a9",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"books",
+						"f13fce94-de6f-454c-b66d-9804c83f47a9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ENDPOINT}}/comments/",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ENDPOINT",
+			"value": "https://z1wa7jddnb.execute-api.us-east-1.amazonaws.com/Prod/",
+			"type": "string"
+		}
+	]
+}
